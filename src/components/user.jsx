@@ -11,6 +11,7 @@ const User = ({
     profession,
     completedMeetings,
     rate,
+    bookmark,
     ...rest
 }) => {
     return (
@@ -26,7 +27,7 @@ const User = ({
             <td>{rate}</td>
             <td>
                 <button onClick={() => onBookmark(_id)}>
-                    <Bookmark {...rest} />
+                    <Bookmark status={bookmark} {...rest} />
                 </button>
             </td>
             <td>
@@ -49,7 +50,8 @@ User.propTypes = {
     qualities: PropTypes.array.isRequired,
     profession: PropTypes.object.isRequired,
     completedMeetings: PropTypes.number.isRequired,
-    rate: PropTypes.number.isRequired
+    rate: PropTypes.number.isRequired,
+    bookmark: PropTypes.bool
 };
 
 export default User;

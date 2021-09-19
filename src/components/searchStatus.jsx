@@ -1,13 +1,21 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const searchStatus = ({ onPhrase, lengthUsers }) => {
+const SearchStatus = ({ onPhrase, length }) => {
     return (
-        <span
-            className={"badge bg-" + (lengthUsers > 0 ? "primary" : "danger")}
-        >
-            {onPhrase(lengthUsers)}
-        </span>
+        <h2>
+            <span className={"badge bg-" + (length > 0 ? "primary" : "danger")}>
+                {length > 0
+                    ? `${length + " " + onPhrase(length)}   с тобой сегодня`
+                    : "Никто с тобой не тусанет"}
+            </span>
+        </h2>
     );
 };
 
-export default searchStatus;
+SearchStatus.propTypes = {
+    onPhrase: PropTypes.func.isRequired,
+    length: PropTypes.number
+};
+
+export default SearchStatus;
