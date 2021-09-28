@@ -1,52 +1,40 @@
-import React from "react";
-import Qualitie from "./qualitie";
-import Bookmark from "./bookmark";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-const User = ({
-  onDelete,
-  onBookmark,
-  name,
-  _id,
-  qualities,
-  profession,
-  completedMeetings,
-  rate,
-  bookmark,
-  ...rest
-}) => {
+import api from "../api";
+import QualitiesList from "./qualitiesList";
+import { Link } from "react-router-dom";
+// { name, professions, quality, completedMeetengs, rate }
+
+const User = ({ id }) => {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    api.users.getById(id).then((user) => {
+      setUser(user);
+    });
+  }, []);
+  console.log(user);
+
+  if (!user) return <h1>Loading...</h1>;
+
   return (
-    <tr key={_id}>
-      <td>{name}</td>
-      <td>
-        {qualities.map((quality) => (
-          <Qualitie key={quality._id} {...quality} {...rest} />
-        ))}
-      </td>
-      <td>{profession.name}</td>
-      <td>{completedMeetings}</td>
-      <td>{rate}</td>
-      <td>
-        <Bookmark status={bookmark} onClick={() => onBookmark(_id)} />
-      </td>
-      <td>
-        <button className="btn btn-danger" onClick={() => onDelete(_id)}>
-          Delete
-        </button>
-      </td>
-    </tr>
+    <>
+      <h2>{user.name}</h2>
+      <h3>Профессия: {user.profession.name}</h3>
+      <p>
+        <QualitiesList qualities={user.qualities} />
+      </p>
+      <p>completedMeetings: {user.completedMeetings}</p>
+      <p>Rate: {user.rate}</p>
+      <Link to="/users">
+        <button>Все пользователи</button>
+      </Link>
+    </>
   );
 };
 
 User.propTypes = {
-  onDelete: PropTypes.func.isRequired,
-  onBookmark: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  _id: PropTypes.string.isRequired,
-  qualities: PropTypes.array.isRequired,
-  profession: PropTypes.object.isRequired,
-  completedMeetings: PropTypes.number.isRequired,
-  rate: PropTypes.number.isRequired,
-  bookmark: PropTypes.bool
+  id: PropTypes.string
 };
 
 export default User;
