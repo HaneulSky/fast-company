@@ -7,17 +7,17 @@ import Login from "./components/layouts/login";
 // import User from "./components/user";
 
 const App = () => {
-  return (
-    <>
-      <NavBar />
+    return (
+        <>
+            <NavBar />
 
-      <Switch>
-        <Route path="/" exact component={Main} />
-        <Route path="/login" component={Login} />
-        <Route path="/users/:userId?" component={Users} />
-      </Switch>
-    </>
-  );
+            <Switch>
+                <Route path="/" exact component={Main} />
+                <Route path="/login" component={Login} />
+                <Route path="/users/:userId?" component={Users} />
+            </Switch>
+        </>
+    );
 };
 
 export default App;
