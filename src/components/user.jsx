@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import api from "../api";
 import QualitiesList from "./qualitiesList";
 import { Link } from "react-router-dom";
-// { name, professions, quality, completedMeetengs, rate }
 
 const User = ({ id }) => {
     const [user, setUser] = useState();
@@ -13,7 +12,6 @@ const User = ({ id }) => {
             setUser(user);
         });
     }, []);
-    console.log(user);
 
     if (!user) return <h1>Loading...</h1>;
 

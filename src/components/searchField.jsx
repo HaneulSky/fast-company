@@ -3,7 +3,16 @@ import PropTypes from "prop-types";
 
 const SearchField = ({ onChange, value }) => {
     return (
-        <input type="search" className="form-control ds-input" value={value} name="search-input" placeholder="Search..." onChange={onChange} />
+        <div className="input-group">
+            <input
+                type="search"
+                className="form-control ds-input"
+                value={value}
+                name="search-input"
+                placeholder="Search..."
+                onChange={onChange}
+            />
+        </div>
     );
 };
 

@@ -8,13 +8,19 @@ const Login = () => {
 
     const validatorConfig = {
         email: {
-            isRequired: { message: "Электронная почта обязательна для заполнения" },
+            isRequired: {
+                message: "Электронная почта обязательна для заполнения"
+            },
             isEmail: { message: "Email введен не корректно" }
         },
         password: {
             isRequired: { message: "Пароль обязателен для заполнения" },
-            isCapitalSymbol: { message: "Пароль должен содержать хотя бы одну заглавную букву" },
-            isContainDigit: { message: "Пароль должен содержать хотя бы одну цифру" },
+            isCapitalSymbol: {
+                message: "Пароль должен содержать хотя бы одну заглавную букву"
+            },
+            isContainDigit: {
+                message: "Пароль должен содержать хотя бы одну цифру"
+            },
             min: { message: "Пароль должен быть не менее 8 символов", value: 8 }
         }
     };
@@ -32,7 +38,10 @@ const Login = () => {
     const isValid = Object.keys(errors).length === 0;
 
     const handleChange = (e) => {
-        setData((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+        setData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }));
     };
 
     const handleSubmit = (e) => {
@@ -66,7 +75,13 @@ const Login = () => {
                             onChange={handleChange}
                             error={errors.password}
                         />
-                        <button type="submit" disabled={!isValid} className="btn btn-secondary w-100 mx-auto">Отправить</button>
+                        <button
+                            type="submit"
+                            disabled={!isValid}
+                            className="btn btn-secondary w-100 mx-auto"
+                        >
+                            Отправить
+                        </button>
                     </form>
                 </div>
             </div>

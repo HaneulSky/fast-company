@@ -5,7 +5,9 @@ const SearchStatus = ({ onPhrase, length }) => {
     return (
         <h2>
             <span className={"badge bg-" + (length > 0 ? "primary" : "danger")}>
-                {length > 0 ? `${length + " " + onPhrase(length)}   с тобой сегодня` : "Никто с тобой не тусанет"}
+                {length > 0
+                    ? `${length + " " + onPhrase(length)}   с тобой сегодня`
+                    : "Никто с тобой не тусанет"}
             </span>
         </h2>
     );
