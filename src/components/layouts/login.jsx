@@ -1,88 +1,46 @@
-import React, { useEffect, useState } from "react";
-import TextField from "../textField";
-import { validator } from "../../utils/validator";
+import React, { useState } from "react";
+import { useParams } from "react-router";
+import LoginForm from "../ui/loginForm";
+import RegisterForm from "../ui/registerForm";
 
 const Login = () => {
-    const [data, setData] = useState({ email: "", password: "" });
-    const [errors, setErrors] = useState({});
-
-    const validatorConfig = {
-        email: {
-            isRequired: {
-                message: "Электронная почта обязательна для заполнения"
-            },
-            isEmail: { message: "Email введен не корректно" }
-        },
-        password: {
-            isRequired: { message: "Пароль обязателен для заполнения" },
-            isCapitalSymbol: {
-                message: "Пароль должен содержать хотя бы одну заглавную букву"
-            },
-            isContainDigit: {
-                message: "Пароль должен содержать хотя бы одну цифру"
-            },
-            min: { message: "Пароль должен быть не менее 8 символов", value: 8 }
-        }
-    };
-
-    useEffect(() => {
-        validate();
-    }, [data]);
-
-    const validate = () => {
-        const errors = validator(data, validatorConfig);
-        setErrors(errors);
-        return Object.keys(errors).length === 0;
-    };
-
-    const isValid = Object.keys(errors).length === 0;
-
-    const handleChange = (e) => {
-        setData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const isValid = validate();
-        if (!isValid) return;
-
-        console.log(data);
-        console.log(e);
+    const { type } = useParams();
+    const [formType, setFormType] = useState(
+        type === "register" ? type : "login"
+    );
+    const toggleFormType = (params) => {
+        setFormType((prevState) =>
+            prevState === "register" ? "login" : "register"
+        );
     };
 
     return (
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    <h3 className="mb-4">Login</h3>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            label="Электронная почта"
-                            value={data.email}
-                            onChange={handleChange}
-                            name="email"
-                            error={errors.email}
-                        />
-                        <TextField
-                            label="Пароль"
-                            type="password"
-                            name="password"
-                            value={data.password}
-                            onChange={handleChange}
-                            error={errors.password}
-                        />
-                        <button
-                            type="submit"
-                            disabled={!isValid}
-                            className="btn btn-secondary w-100 mx-auto"
-                        >
-                            Отправить
-                        </button>
-                    </form>
+                    {formType === "register" ? (
+                        <>
+                            <h3 className="mb-4">Регистрация</h3>
+                            <RegisterForm />
+                            <p>
+                                Already have account?{" "}
+                                <a role="button" onClick={toggleFormType}>
+                                    Sign In
+                                </a>
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <h3 className="mb-4">Вход</h3>
+                            <LoginForm />
+                            <p>
+                                Don`t have account?{" "}
+                                <a role="button" onClick={toggleFormType}>
+                                    Sign Up
+                                </a>
+                            </p>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

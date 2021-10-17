@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import api from "../api";
-import QualitiesList from "./qualitiesList";
+import api from "../../../api";
+import QualitiesList from "../../ui/qualities/qualitiesList";
 import { Link } from "react-router-dom";
 
-const User = ({ id }) => {
+const UserPage = ({ id }) => {
     const [user, setUser] = useState();
 
     useEffect(() => {
@@ -24,15 +24,16 @@ const User = ({ id }) => {
             </p>
             <p>completedMeetings: {user.completedMeetings}</p>
             <p>Rate: {user.rate}</p>
-            <Link to="/users">
-                <button>Все пользователи</button>
+
+            <Link to={`/users/${id}/edit`} className="btn btn-primary">
+                изменить
             </Link>
         </>
     );
 };
 
-User.propTypes = {
+UserPage.propTypes = {
     id: PropTypes.string
 };
 
-export default User;
+export default UserPage;
