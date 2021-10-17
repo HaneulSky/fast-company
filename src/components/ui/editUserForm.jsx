@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import api from "../../api";
@@ -16,24 +16,31 @@ const EditUserForm = () => {
         qualities: [],
         licence: false
     });
+
     const [errors, setErrors] = useState({});
     const [professions, setProfessions] = useState({});
     const [qualities, setQualities] = useState();
-    const [user, setUser] = useState();
+    const [isLoading, setIsLoading] = useState(false);
     const { userId } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
     useEffect(() => {
-        setTimeout(function () {
-            api.users.getById(userId).then((user) => {
-                setUser(user);
-            });
-        }, 2000);
+        api.users.getById(userId).then((data) => {
+            setData((prevState) => ({
+                ...prevState,
+                name: data.name,
+                email: "",
+                profession: data.profession._id,
+                sex: data.sex,
+                qualities: data.qualities
+            }));
+            setIsLoading(true);
+        });
     }, []);
-    console.log(user);
 
     const validatorConfig = {
         email: {
@@ -67,12 +74,8 @@ const EditUserForm = () => {
     const isValid = Object.keys(errors).length === 0;
 
     const handleChange = (target) => {
-        setData((prevState) => ({
-            ...prevState,
-            [target.name]: target.value
-        }));
+        setData((prevState) => ({ ...prevState, [target.name]: target.value }));
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -81,9 +84,32 @@ const EditUserForm = () => {
 
         console.log(data);
         console.log(e);
+
+        const prof = {
+            _id: data.profession,
+            name: Object.keys(professions)
+                .map((prof) => professions[prof])
+                .find((prof) => prof._id === data.profession).name
+        };
+        const qual = data.qualities.map((q) => ({
+            id: q.value,
+            name: q.label,
+            color: Object.keys(qualities)
+                .map((quality) => qualities[quality])
+                .find((quality) => quality._id === q.value).color
+        }));
+
+        const newData = { ...data, profession: prof, qualities: qual };
+
+        console.log(newData);
+
+        api.users.update(userId, newData).then(() => goBack());
+    };
+    const goBack = () => {
+        history.push(`/users/${userId}`);
     };
 
-    if (user) {
+    if (isLoading) {
         return (
             <div className="container mt-5">
                 <div className="row">
@@ -92,7 +118,7 @@ const EditUserForm = () => {
                             <TextField
                                 label="Имя"
                                 name="name"
-                                value={user.name}
+                                value={data.name}
                                 onChange={handleChange}
                                 error={errors.name}
                             />
@@ -106,9 +132,9 @@ const EditUserForm = () => {
                             <SelectField
                                 onChange={handleChange}
                                 options={professions}
-                                defaultOption="Choose..."
+                                // defaultOption="Choose..."
                                 error={errors.profession}
-                                value={user.profession}
+                                value={data.profession}
                                 label="Выберите вашу профессию"
                             />
                             <RadioField
@@ -125,9 +151,9 @@ const EditUserForm = () => {
                             <MultiSelectField
                                 options={qualities}
                                 onChange={handleChange}
-                                name={data.qualities}
+                                name="qualities"
                                 label="Выберите ваши качества"
-                                selected={user.qualities}
+                                selected={data.qualities}
                             />
                             <button
                                 type="submit"
