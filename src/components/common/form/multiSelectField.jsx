@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import PropTypes from "prop-types";
 
-const MultiSelectField = ({ options, onChange, name, label }) => {
+const MultiSelectField = ({ options, onChange, name, label, selected }) => {
     const optionsArray =
         !Array.isArray(options) && typeof options === "object"
             ? Object.keys(options).map((optionName) => ({
@@ -10,6 +10,14 @@ const MultiSelectField = ({ options, onChange, name, label }) => {
                   value: options[optionName]._id
               }))
             : options;
+
+    const selectedArray =
+        selected.length !== 0 && selected[0]._id
+            ? selected.map((item) => ({
+                  label: item.name,
+                  value: item._id
+              }))
+            : selected;
     const handleChange = (value) => {
         onChange({ name: name, value });
     };
@@ -24,6 +32,7 @@ const MultiSelectField = ({ options, onChange, name, label }) => {
                 classNamePrefix="select"
                 onChange={handleChange}
                 name={name}
+                value={selectedArray}
             />
         </div>
     );
@@ -32,7 +41,8 @@ MultiSelectField.propTypes = {
     onChange: PropTypes.func,
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     name: PropTypes.array,
-    label: PropTypes.string
+    label: PropTypes.string,
+    selected: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
 export default MultiSelectField;

@@ -82,62 +82,68 @@ const EditUserForm = () => {
         console.log(data);
         console.log(e);
     };
-    return (
-        <div className="container mt-5">
-            <div className="row">
-                <div className="col-md-6 offset-md-3 shadow p-4">
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            label="Имя"
-                            name="name"
-                            value={data.name}
-                            onChange={handleChange}
-                            error={errors.name}
-                        />
-                        <TextField
-                            label="Электронная почта"
-                            value={data.email}
-                            onChange={handleChange}
-                            name="email"
-                            error={errors.email}
-                        />
-                        <SelectField
-                            onChange={handleChange}
-                            options={professions}
-                            defaultOption="Choose..."
-                            error={errors.profession}
-                            value={data.profession}
-                            label="Выберите вашу профессию"
-                        />
-                        <RadioField
-                            options={[
-                                { name: "Male", value: "male" },
-                                { name: "Female", value: "female" },
-                                { name: "Other", value: "other" }
-                            ]}
-                            value={data.sex}
-                            name="sex"
-                            onChange={handleChange}
-                            label="Выберите ваш пол "
-                        />
-                        <MultiSelectField
-                            options={qualities}
-                            onChange={handleChange}
-                            name={data.qualities}
-                            label="Выберите ваши качества"
-                        />
-                        <button
-                            type="submit"
-                            disabled={!isValid}
-                            className="btn btn-secondary w-100 mx-auto"
-                        >
-                            Обновить
-                        </button>
-                    </form>
+
+    if (user) {
+        return (
+            <div className="container mt-5">
+                <div className="row">
+                    <div className="col-md-6 offset-md-3 shadow p-4">
+                        <form onSubmit={handleSubmit}>
+                            <TextField
+                                label="Имя"
+                                name="name"
+                                value={user.name}
+                                onChange={handleChange}
+                                error={errors.name}
+                            />
+                            <TextField
+                                label="Электронная почта"
+                                value={data.email}
+                                onChange={handleChange}
+                                name="email"
+                                error={errors.email}
+                            />
+                            <SelectField
+                                onChange={handleChange}
+                                options={professions}
+                                defaultOption="Choose..."
+                                error={errors.profession}
+                                value={user.profession}
+                                label="Выберите вашу профессию"
+                            />
+                            <RadioField
+                                options={[
+                                    { name: "Male", value: "male" },
+                                    { name: "Female", value: "female" },
+                                    { name: "Other", value: "other" }
+                                ]}
+                                value={data.sex}
+                                name="sex"
+                                onChange={handleChange}
+                                label="Выберите ваш пол "
+                            />
+                            <MultiSelectField
+                                options={qualities}
+                                onChange={handleChange}
+                                name={data.qualities}
+                                label="Выберите ваши качества"
+                                selected={user.qualities}
+                            />
+                            <button
+                                type="submit"
+                                disabled={!isValid}
+                                className="btn btn-secondary w-100 mx-auto"
+                            >
+                                Обновить
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return <p>Loading...</p>;
+    }
 };
 
 export default EditUserForm;
