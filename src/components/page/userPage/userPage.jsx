@@ -12,6 +12,14 @@ const UserPage = ({ id }) => {
     const [users, setUsers] = useState([]);
     const [errors, setErrors] = useState({});
     const [comments, setComments] = useState();
+    const [newComment, setNewComment] = useState({
+        name: "",
+        message: ""
+    });
+
+    const getComments = () => {
+        api.comments.fetchCommentsForUser(id).then((data) => setComments(data));
+    };
 
     useEffect(() => {
         api.users.fetchAll().then((data) => {
@@ -20,15 +28,18 @@ const UserPage = ({ id }) => {
         api.users.getById(id).then((user) => {
             setUser(user);
         });
-        api.comments.fetchCommentsForUser(id).then((data) => {
-            setComments(data);
-        });
+        getComments();
     }, []);
 
     const validatorConfig = {
-        users: {
+        name: {
             isRequired: {
                 message: "Обязательно выберите пользователя"
+            }
+        },
+        message: {
+            isRequired: {
+                message: "Это поле не должно быть пустым"
             }
         }
     };
@@ -37,17 +48,24 @@ const UserPage = ({ id }) => {
     }, [users]);
 
     const validate = () => {
-        const errors = validator(users, validatorConfig);
+        const errors = validator(newComment, validatorConfig);
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
 
     const isValid = Object.keys(errors).length === 0;
     const handleChange = (target) => {
-        setUsers((prevState) => ({
+        setNewComment((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
+    };
+    const handleDelete = (id) => {
+        api.comments.remove(id).then(getComments);
+    };
+
+    const addComment = () => {
+        api.comments.add();
     };
 
     if (!user) return <h1>Loading...</h1>;
@@ -156,9 +174,11 @@ const UserPage = ({ id }) => {
 
                     {!!comments.length && (
                         <CommentList
+                            onDelete={handleDelete}
                             comments={comments}
                             users={users}
                             id={id}
+                            onSubmit={addComment}
                         />
                     )}
                 </div>

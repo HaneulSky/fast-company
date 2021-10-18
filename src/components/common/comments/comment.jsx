@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import api from "../../../api";
+import { formatDate } from "../../../utils/formatDate";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, onDelete }) => {
     const [user, setUser] = useState();
     useEffect(() => {
         api.users.getById(comment.userId).then((user) => {
@@ -28,10 +29,14 @@ const Comment = ({ comment }) => {
                                     <p className="mb-1">
                                         {user}
                                         <span className="small">
-                                            {comment.created_at}
+                                            {" - "}
+                                            {formatDate(+comment.created_at)}
                                         </span>
                                     </p>
-                                    <button className="btn btn-sm text-primary d-flex align-items-center">
+                                    <button
+                                        className="btn btn-sm text-primary d-flex align-items-center"
+                                        onClick={() => onDelete(comment._id)}
+                                    >
                                         <i className="bi bi-x-lg"></i>
                                     </button>
                                 </div>
@@ -46,7 +51,8 @@ const Comment = ({ comment }) => {
 };
 
 Comment.propTypes = {
-    comment: PropTypes.object
+    comment: PropTypes.object,
+    onDelete: PropTypes.func
 };
 
 export default Comment;
