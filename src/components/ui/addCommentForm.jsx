@@ -1,40 +1,47 @@
 import React from "react";
 import SelectField from "../common/form/selectField";
 import PropTypes from "prop-types";
+import TextAreaField from "../common/form/textAreaField";
 
-const AddCommentForm = ({ isValid, onChange, users, errors }) => {
+const AddCommentForm = ({
+    isValid,
+    onChange,
+    users,
+    errors,
+    onSubmit,
+    data
+}) => {
     return (
         <div>
             <h2>New comment</h2>
-            <div className="mb-4">
-                <SelectField
+            <form onSubmit={onSubmit}>
+                <div className="mb-4">
+                    <SelectField
+                        defaultOption="Выберите пользователя"
+                        onChange={onChange}
+                        options={users}
+                        error={errors.userName}
+                        value={data.userName}
+                        name="userName"
+                        label="Выберите пользователя"
+                    />
+                </div>
+                <TextAreaField
+                    label="Сообщение"
                     onChange={onChange}
-                    options={users}
-                    defaultOption="Выберите пользователя"
-                    error={errors.users}
-                    label="Выберите пользователя"
+                    error={errors.userMessage}
+                    value={data.userMessage}
+                    name="userMessage"
                 />
-            </div>
-            <div className="mb-4">
-                <label
-                    htmlFor="exampleFormControlTextarea1"
-                    className="form-label"
+                <button
+                    type="submit"
+                    disabled={!isValid}
+                    className="btn btn-primary"
+                    onSubmit={() => onSubmit()}
                 >
-                    Сообщение
-                </label>
-                <textarea
-                    className="form-control"
-                    id="exampleFormControlTextarea1"
-                    rows="3"
-                ></textarea>
-            </div>
-            <button
-                type="submit"
-                disabled={!isValid}
-                className="btn btn-primary"
-            >
-                Опубликовать
-            </button>
+                    Опубликовать
+                </button>
+            </form>
         </div>
     );
 };
@@ -43,7 +50,9 @@ AddCommentForm.propTypes = {
     isValid: PropTypes.bool,
     onChange: PropTypes.func,
     users: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    errors: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    errors: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    onSubmit: PropTypes.func,
+    data: PropTypes.object
 };
 
 export default AddCommentForm;
