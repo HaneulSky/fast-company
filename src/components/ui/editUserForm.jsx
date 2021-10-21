@@ -112,6 +112,13 @@ const EditUserForm = () => {
     if (isLoading) {
         return (
             <div className="container mt-5">
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={goBack}
+                >
+                    <i className="bi bi-caret-left"></i> Назад
+                </button>
                 <div className="row">
                     <div className="col-md-6 offset-md-3 shadow p-4">
                         <form onSubmit={handleSubmit}>
