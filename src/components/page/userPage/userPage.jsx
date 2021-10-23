@@ -73,16 +73,14 @@ const UserPage = ({ id }) => {
                 ._id,
             content: newCommentData.userMessage
         };
-        api.comments
-            .add(newComment)
-            .then(getComments)
-            .then(
-                setNewCommentData((prevState) => ({
-                    ...prevState,
-                    userName: "",
-                    userMessage: ""
-                }))
-            );
+        api.comments.add(newComment).then(getComments);
+
+        setNewCommentData((prevState) => ({
+            ...prevState,
+            userName: "",
+            userMessage: ""
+        }));
+
         console.log(comments);
     };
 
