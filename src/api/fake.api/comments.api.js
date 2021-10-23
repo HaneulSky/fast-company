@@ -16,8 +16,8 @@ const comments = [
     {
         _id: "67rdca3eeb7f6fgdaasd",
         pageId: "67rdca3eeb7f6fgeed471817",
-        userId: "67rdca3eeb7f6fgeed471815",
-        content: "Lorem ipsum dolor and etc",
+        userId: "67rdca3eeb7f6fgeed471817",
+        content: "Lorem ipsum dolor and etc hgf",
         created_at: "1633573058520"
     }
 ];

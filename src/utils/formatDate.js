@@ -25,7 +25,7 @@ export function formatDate(param) {
     } else if (diff / 60000 <= 30) {
         return "30 минут назад";
     } else if (diff / 60000 <= 1440) {
-        return `${date.getHours()} ${date.getMinutes()}`;
+        return `${date.getHours()} : ${date.getMinutes()}`;
     } else if (diff / 60000 <= 1440 * 365) {
         return `${date.getDate()} ${monthNames[date.getMonth()]}`;
     } else if (diff / 60000 > 1440 * 365) {
