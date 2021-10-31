@@ -1,3 +1,5 @@
+Для просмотра проекта перейдите по [ссылке](https://haneulsky.github.io/fast-company/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
