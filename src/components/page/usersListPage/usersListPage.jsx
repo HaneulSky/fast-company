@@ -10,39 +10,36 @@ import _ from "lodash";
 import UserPage from "../../page/userPage";
 import { useParams } from "react-router";
 import SearchField from "../../common/form/searchField";
+import { useUser } from "../../../hooks/useUsers.jsx";
 
 const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
-    const [users, setUsers] = useState([]);
     const [search, setSearch] = useState("");
     const { userId } = useParams();
-
-    useEffect(() => {
-        api.users.fetchAll().then((data) => {
-            setUsers(data);
-        });
-    }, []);
+    const { users } = useUser();
+    console.log(users);
 
     const handleDelete = (userID) => {
-        return setUsers(
-            users.filter(
-                (user) => JSON.stringify(user._id) !== JSON.stringify(userID)
-            )
-        );
+        // return setUsers(
+        //     users.filter(
+        //         (user) => JSON.stringify(user._id) !== JSON.stringify(userID)
+        //     )
+        // );
+        console.log(userID);
     };
 
     const toggleBookmark = (userId) => {
-        setUsers(
-            users.map((user) => {
-                if (user._id === userId) {
-                    return { ...user, bookmark: !user.bookmark };
-                }
-                return user;
-            })
-        );
+        const newArray = users.map((user) => {
+            if (user._id === userId) {
+                return { ...user, bookmark: !user.bookmark };
+            }
+            return user;
+        });
+        //   setUsers(newArray)
+        console.log(newArray);
     };
 
     const pageSize = 8;
