@@ -161,6 +161,7 @@ const EditUserForm = () => {
                                 name="qualities"
                                 label="Выберите ваши качества"
                                 selected={data.qualities}
+                                values
                             />
                             <button
                                 type="submit"

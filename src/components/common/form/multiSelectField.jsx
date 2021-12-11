@@ -11,13 +11,6 @@ const MultiSelectField = ({ options, onChange, name, label, selected }) => {
               }))
             : options;
 
-    const selectedArray =
-        selected.length !== 0 && selected[0]._id
-            ? selected.map((item) => ({
-                  label: item.name,
-                  value: item._id
-              }))
-            : selected;
     const handleChange = (value) => {
         onChange({ name: name, value });
     };
@@ -32,7 +25,7 @@ const MultiSelectField = ({ options, onChange, name, label, selected }) => {
                 classNamePrefix="select"
                 onChange={handleChange}
                 name={name}
-                value={selectedArray}
+                value={selected}
             />
         </div>
     );
