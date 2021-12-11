@@ -34,15 +34,3 @@ export function formatDate(param) {
         } ${date.getFullYear()}`;
     }
 }
-
-/* Отобразить в зависимости от created_at
-
-1. 1 минуту назад
-2. 5 минут назад
-3. 10 минут назад
-4. 30 минут назад
-5. hours.minutes
-6. day.month
-7. day.moth.year
- в одном часе 3 600 000 * 24 миллисекунд
- */
