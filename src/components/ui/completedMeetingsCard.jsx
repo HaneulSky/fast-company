@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CompletedMeetingsCard = ({ user }) => {
+const CompletedMeetingsCard = ({ value }) => {
     return (
         <div className="card mb-3">
             <div
@@ -16,14 +16,14 @@ const CompletedMeetingsCard = ({ user }) => {
                 <h5 className="card-title">
                     <span>Completed meetings</span>
                 </h5>
-                <h1 className="display-1">{user.completedMeetings}</h1>
+                <h1 className="display-1">{value}</h1>
             </div>
         </div>
     );
 };
 
 CompletedMeetingsCard.propTypes = {
-    user: PropTypes.object
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
 export default CompletedMeetingsCard;

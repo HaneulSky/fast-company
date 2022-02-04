@@ -11,19 +11,11 @@ export const useUser = () => {
 
 const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
-    const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
-
+    const [error, setError] = useState(null);
     useEffect(() => {
         getUsers();
     }, []);
-    useEffect(() => {
-        if (error !== null) {
-            toast(error);
-            setError(null);
-        }
-    }, [error]);
-
     async function getUsers() {
         try {
             const { content } = await userService.get();
@@ -33,16 +25,23 @@ const UserProvider = ({ children }) => {
             errorCatcher(error);
         }
     }
-
+    useEffect(() => {
+        if (error !== null) {
+            toast(error);
+            setError(null);
+        }
+    }, [error]);
     function errorCatcher(error) {
         const { message } = error.response.data;
-        setError(message);
-        setLoading(false);
-    }
 
+        setError(message);
+    }
+    function getUserById(userId) {
+        return users.find((u) => u._id === userId);
+    }
     return (
-        <UserContext.Provider value={{ users }}>
-            {!isLoading ? children : "Loading ..."}
+        <UserContext.Provider value={{ users, getUserById }}>
+            {!isLoading ? children : "Loading...."}
         </UserContext.Provider>
     );
 };

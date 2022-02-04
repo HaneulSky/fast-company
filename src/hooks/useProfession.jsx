@@ -17,6 +17,7 @@ export const ProfessionProvider = ({ children }) => {
     useEffect(() => {
         getProfessionsList();
     }, []);
+
     useEffect(() => {
         if (error !== null) {
             toast(error);
