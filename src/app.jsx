@@ -1,18 +1,19 @@
 import React from "react";
-import Users from "./components/layouts/users";
-import NavBar from "./components/ui/navBar";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Main from "./components/layouts/main";
+
+import Users from "./components/layouts/users";
 import Login from "./components/layouts/login";
-import EditUserForm from "./components/ui/editUserForm";
+import LogOut from "./components/layouts/logOut";
+import Main from "./components/layouts/main";
+import NavBar from "./components/ui/navBar";
 import { ToastContainer } from "react-toastify";
 import { ProfessionProvider } from "./hooks/useProfession";
 import { QualitiesProvider } from "./hooks/useQuality";
 import AuthProvider from "./hooks/useAuth";
 
-const App = () => {
+function App() {
     return (
-        <>
+        <div>
             <AuthProvider>
                 <NavBar />
 
@@ -20,20 +21,21 @@ const App = () => {
                     <ProfessionProvider>
                         <Switch>
                             <Route
-                                path="/users/:userId?/edit"
-                                component={EditUserForm}
+                                path="/users/:userId?/:edit?"
+                                component={Users}
                             />
-                            <Route path="/users/:userId?" component={Users} />
                             <Route path="/login/:type?" component={Login} />
+                            <Route path="/logout" component={LogOut} />
                             <Route path="/" exact component={Main} />
                             <Redirect to="/" />
                         </Switch>
                     </ProfessionProvider>
                 </QualitiesProvider>
             </AuthProvider>
+
             <ToastContainer />
-        </>
+        </div>
     );
-};
+}
 
 export default App;
