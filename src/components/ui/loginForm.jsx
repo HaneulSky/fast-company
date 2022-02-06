@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import CheckBoxField from "../common/form/checkBoxField";
-import { useAuth } from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthErrors, login } from "../../store/users";
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
     const history = useHistory();
+    const loginError = useSelector(getAuthErrors());
     const [data, setData] = useState({
         email: "",
         password: "",
         stayOn: false
     });
     const [errors, setErrors] = useState({});
-    const { signIn } = useAuth();
 
     const validatorConfig = {
         email: {
@@ -53,22 +55,16 @@ const LoginForm = () => {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const isValid = validate();
         if (!isValid) return;
+        const redirect = history.location.state
+            ? history.location.state.from.pathname
+            : "/";
 
-        signIn(data);
-        console.log(data);
-        console.log(e);
-
-        try {
-            await signIn(data);
-            history.push("/");
-        } catch (error) {
-            setErrors(error);
-        }
+        dispatch(login({ payload: data, redirect }));
     };
 
     return (
@@ -95,10 +91,11 @@ const LoginForm = () => {
             >
                 Оставаться в системе
             </CheckBoxField>
+            {loginError && <p className="text-danger">{loginError}</p>}
             <button
                 type="submit"
                 disabled={!isValid}
-                className="btn btn-secondary w-100 mx-auto"
+                className="btn btn-primary w-100 mx-auto"
             >
                 Отправить
             </button>
